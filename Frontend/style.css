@@ -1,0 +1,105 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", sans-serif;
+}
+
+/* Header */
+header {
+    background-color: #3d0c02;
+    padding: 20px;
+    text-align: center;
+}
+
+.logo {
+    color: #ffd28f;
+    font-size: 36px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+/* Container */
+.reservation-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 25px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.reservation-container h2 {
+    margin-bottom: 10px;
+    color: #3d0c02;
+}
+
+.subtext {
+    color: #555;
+    margin-bottom: 20px;
+}
+
+/* Form inputs */
+.reservation-form .input-group {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.reservation-form label {
+    font-size: 14px;
+    margin-bottom: 4px;
+    color: #222;
+}
+
+.reservation-form input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+/* Button */
+.submit-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #3d0c02;
+    color: #ffd28f;
+    font-size: 18px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: 0.3s;
+}
+
+.submit-btn:hover {
+    background-color: #5a1501;
+}
+
+/* Footer */
+footer {
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #3d0c02;
+    text-align: center;
+    color: #ffd28f;
+    font-size: 14px;
+}
+#successMessage {
+    background: #d1ffd6;
+    border: 1px solid #32a852;
+    color: #1e7b39;
+    padding: 15px;
+    border-radius: 8px;
+    max-width: 600px;
+    margin: 20px auto;
+    text-align: center;
+    font-size: 18px;
+    display: none;
+}
+
+#successMessage.show {
+    display: block;
+}
