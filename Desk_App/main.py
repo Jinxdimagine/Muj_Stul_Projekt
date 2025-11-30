@@ -1,27 +1,21 @@
-import asyncio
-import websockets
-import json
-import time
+from WebSocketClient import WebSocketClient
+from DeskGUI import DeskGUI
 
-async def handle_connection():
-    uri = "ws://localhost:3031"
+def main():
+    # Create WebSocket client
+    ws_client = WebSocketClient("ws://localhost:3031")
 
-    while True:
-        try:
-            print("Connecting to server...")
-            async with websockets.connect(uri) as ws:
-                print("Connected!")
+    # Create GUI and pass WebSocket client
+    gui = DeskGUI(ws_client)
 
-                # send initial message (optional)
-                await ws.send(json.dumps({"type": "hello", "client": "desk_app"}))
+    # Pass GUI callback to WebSocket so new reservations are added
+    ws_client.on_message = lambda data: gui.add_reservation(data)
 
-                while True:
-                    msg = await ws.recv()
-                    print("Received:", msg)
+    # Start WebSocket in background
+    ws_client.start()
 
-        except Exception as e:
-            print("Connection lost:", e)
-            print("Reconnecting in 2 seconds...")
-            time.sleep(2)  # slow down reconnect loop
+    # Start GUI loop (blocking)
+    gui.run()
 
-asyncio.run(handle_connection())
+if __name__ == "__main__":
+    main()
