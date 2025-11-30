@@ -33,7 +33,7 @@ app.post('/api/reservation', (req, res) => {
 const wss = new WebSocket.Server({ port: 3031 });
 wss.on('connection', ws => {
     console.log('Client connected');
-
+    ws.send("Welcome Python client!");
     ws.on('message', message => {
         console.log('Received:', message.toString());
         ws.send(`Server echo: ${message}`);
