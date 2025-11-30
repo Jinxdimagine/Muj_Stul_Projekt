@@ -7,10 +7,14 @@ def main():
 
     # Create GUI and pass WebSocket client
     gui = DeskGUI(ws_client)
-
+    
+    def handle_ws_message(data):
+        if "name" in data and "people" in data:
+            gui.add_reservation(data)
+        else:
+            print("Ignored non-reservation message:", data)
     # Pass GUI callback to WebSocket so new reservations are added
-    ws_client.on_message = lambda data: gui.add_reservation(data)
-
+    ws_client.on_message = handle_ws_message
     # Start WebSocket in background
     ws_client.start()
 
