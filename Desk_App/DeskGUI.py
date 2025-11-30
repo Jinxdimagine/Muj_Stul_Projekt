@@ -12,8 +12,6 @@ class DeskGUI:
         # Add a label
         tk.Label(self.root, text="Hello, Desk App!").pack(pady=20)
 
-        # Run the Tkinter main loop
-        self.root.mainloop()
 
     def add_reservation(self,data):
         self.list.append(data)

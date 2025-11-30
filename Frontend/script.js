@@ -10,7 +10,7 @@ function setupForm() {
         console.error("Form not found!");
         return;
     }
-
+    generateTimes();
     form.addEventListener("submit", handleSubmit);
 }
 
@@ -44,7 +44,9 @@ function getFormData() {
         surname: document.getElementById("surname").value,
         telefon: document.getElementById("telefon").value,
         email: document.getElementById("email").value,
-        people: document.getElementById("people").value
+        people: document.getElementById("people").value,
+        date: document.getElementById("date").value,
+        time: document.getElementById("time").value
     };
 }
 
@@ -74,5 +76,28 @@ function showErrorMessage() {
     msg.style.border = "1px solid #d11a1a";
     msg.style.color = "#8b0000";
     msg.classList.add("show");
+}
+
+const dateInput = document.getElementById("date");
+const tomorrowDate = new Date();
+tomorrowDate.setDate(tomorrowDate.getDate() + 1);
+const tomorrow = tomorrowDate.toISOString().split("T")[0];
+dateInput.setAttribute("min", tomorrow);
+
+// Vygenerování časů 11:00–23:00 po 15 min
+const timeSelect = document.getElementById("time");
+function generateTimes() {
+    let start = 11 * 60; // 11:00
+    let end = 23 * 60;   // 23:00
+    let interval = 15;
+
+    for (let t = start; t <= end; t += interval) {
+        let hours = String(Math.floor(t / 60)).padStart(2, "0");
+        let minutes = String(t % 60).padStart(2, "0");
+        let option = document.createElement("option");
+        option.value = `${hours}:${minutes}`;
+        option.textContent = `${hours}:${minutes}`;
+        timeSelect.appendChild(option);
+    }
 }
 

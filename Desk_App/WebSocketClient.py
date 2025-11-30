@@ -22,17 +22,27 @@ class WebSocketClient:
                     self.ws = ws
                     print("Connected to server")
 
-                    # Optionally send a hello message
+                    # send hello message
                     await self.send({"type": "desk_app_connected"})
+
                     while self.running:
                         message = await ws.recv()
-                        data = json.loads(message)
-                        # Send message to GUI callback
+
+                        # TRY to parse JSON
+                        try:
+                            data = json.loads(message)
+                        except json.JSONDecodeError:
+                            print("Non-JSON message received:", message)
+                            continue  # skip and keep connection alive
+
+                        # If JSON OK, send to GUI
                         if self.on_message:
                             self.on_message(data)
+
             except Exception as e:
                 print("Connection lost, retrying in 2s...", e)
                 await asyncio.sleep(2)
+
 
     def start(self):
         # Run websocket in a separate thread
@@ -47,7 +57,6 @@ class WebSocketClient:
                 await self.ws.send(json.dumps(data))
             except Exception as e:
                 print("Send failed:", e)
-
     def send_sync(self, data):
         asyncio.run(self.send(data))
 
