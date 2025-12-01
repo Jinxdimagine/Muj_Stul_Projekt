@@ -1,11 +1,12 @@
 const express = require('express');
-const fetch = require('node-fetch');
 const path = require('path');
 const app = express();
 const WebSocket = require("ws");
-const wss = new WebSocket.Server({ port: 3031 });
 const fs = require("fs");
-const ds="Web_Server/ds_server"
+const http = require('http');
+const dsPath = path.join(__dirname, 'ds_server.json');
+const server = http.createServer(app);
+const wss = new WebSocket.Server({ server });
 app.use((req, res, next) => {
     console.log(`API CALLED: ${req.method} ${req.url} ${res.statusCode}`);
     next();
@@ -24,14 +25,11 @@ app.get('/', (req, res) => {
 
 wss.on('connection', ws => {
     console.log('Client connected');
+    const reservations=send_saved_reservations()
     // Poslat uvítací zprávu
     ws.send(JSON.stringify({ message: "Welcome Python client!" }));
-    const reservations = send_saved_reservations();
-    wss.clients.forEach(client => {
-        reservations.forEach(res => client.send(JSON.stringify(res)));
-    });
-
-    clear()
+    reservations.forEach(res => ws.send(JSON.stringify(res)));
+    clear();
     // Zachytávání zpráv od klienta
     ws.on('message', message => {
         let data;
@@ -76,7 +74,7 @@ app.post('/api/reservation', (req, res) => {
 function send_saved_reservations(){
     let data = [];
     try {
-        const jsonString = fs.readFileSync(ds, "utf8");
+        const jsonString = fs.readFileSync(dsPath, "utf8");
         if (jsonString) {
             data = JSON.parse(jsonString);
         }
@@ -88,7 +86,7 @@ function send_saved_reservations(){
 function save_reservation(newReservation){
     let data = [];
     try {
-        const jsonString = fs.readFileSync(ds, "utf8");
+        const jsonString = fs.readFileSync(dsPath, "utf8");
         if (jsonString) {
             data = JSON.parse(jsonString);
         }
@@ -96,14 +94,15 @@ function save_reservation(newReservation){
         console.error("Error reading file:", err);
     }
     data.push(newReservation)
-    fs.writeFileSync(ds, JSON.stringify(data, null, 4));
+    fs.writeFileSync(dsPath, JSON.stringify(data, null, 4));
 }
 function clear(){
-    fs.writeFileSync(ds, JSON.stringify([], null, 4));
+    fs.writeFileSync(dsPath, JSON.stringify([], null, 4));
 
 }
 
 // HTTP listener
-app.listen(3001, 'localhost', () => {
-    console.log('Server běží na http://localhost:3001');
+const PORT = process.env.PORT || 3001;
+server.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
 });
