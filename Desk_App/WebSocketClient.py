@@ -10,6 +10,7 @@ class WebSocketClient:
         uri: ws://localhost:3031
         on_message: callback function to send received messages to GUI
         """
+
         self.uri = uri
         self.on_message = on_message
         self.running = True

@@ -47,7 +47,7 @@ function getFormData() {
         people: document.getElementById("people").value,
         date: document.getElementById("date").value,
         time: document.getElementById("time").value,
-        status:"pending"
+        status:"sending"
     };
 }
 

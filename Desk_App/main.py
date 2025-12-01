@@ -1,12 +1,13 @@
 from WebSocketClient import WebSocketClient
 from DeskGUI import DeskGUI
-
+from dshandler import DsHandler
 def main():
+    dshandler=DsHandler()
     # Create WebSocket client
     ws_client = WebSocketClient("ws://localhost:3031")
 
     # Create GUI and pass WebSocket client
-    gui = DeskGUI(ws_client)
+    gui = DeskGUI(ws_client,dshandler)
     
     def handle_ws_message(data):
         if "name" in data and "people" in data:
