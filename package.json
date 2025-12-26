@@ -12,8 +12,9 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-    "express": "^5.1.0",
+    "express": "^5.2.1",
     "node-fetch": "^2.7.0",
+    "websockets": "^0.2.0",
     "ws": "^8.18.3"
   }
 }
