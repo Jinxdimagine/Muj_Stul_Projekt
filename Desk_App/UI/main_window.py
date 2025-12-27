@@ -14,7 +14,7 @@ class DeskGUI:
         self.root.minsize(800, 500)
 
         # --- Levý panel (LabelFrame, fixní velikost) ---
-        self.left_panel = tk.LabelFrame(self.root, text="Pending Reservations", width=300, height=500)
+        self.left_panel = tk.LabelFrame(self.root, text="Rezervace na vyřízení", width=300, height=500)
         self.left_panel.place(x=10, y=10)  # pevná pozice
         self.left_panel.pack_propagate(False)  # zachová pevnou velikost
 

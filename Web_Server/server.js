@@ -5,7 +5,7 @@ const app = express();
 const WebSocket = require("ws");
 const wss = new WebSocket.Server({ port: 3031 });
 const fs = require("fs");
-const ds="Web_Server/ds_server"
+const ds="ds_server"
 app.use((req, res, next) => {
     console.log(`API CALLED: ${req.method} ${req.url} ${res.statusCode}`);
     next();

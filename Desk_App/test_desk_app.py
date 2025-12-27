@@ -1,5 +1,5 @@
 import unittest
-from DeskGUI import DeskGUI
+from UI.main_window import DeskGUI
 
 class DummyDsHandler:
     def __init__(self):
