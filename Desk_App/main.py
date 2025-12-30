@@ -1,7 +1,6 @@
 from application.Application import Application
-
-#from controller.employee_controller import EmployeeController
-#from controller.reservation_controller import ReservationController
+from Controller.EmployeeController import EmployeeController
+from Controller.ReservationController import ReservationController
 #from dao.dao import DAO
 
 def main():
@@ -9,12 +8,11 @@ def main():
     #dao = DAO()
 
     # Controller-y pro jednotlivé entity
-    #employee_controller = EmployeeController(dao)
-    #reservation_controller = ReservationController(dao)
+    employee_controller = EmployeeController()
+    reservation_controller = ReservationController()
 
     # Hlavní aplikace – GUI + swap view
-    #app = Application(employee_controller, reservation_controller)
-    app = Application()
+    app = Application(employee_controller, reservation_controller)
     app.run()
 
 if __name__ == "__main__":

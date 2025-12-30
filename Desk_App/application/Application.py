@@ -3,9 +3,9 @@ from UI.main_view import MainView
 from UI.employee_form import EmployeeForm
 
 class Application:
-    def __init__(self):
-        #self.employee_controller = employee_controller
-        #self.reservation_controller = reservation_controller
+    def __init__(self,employee_controller,reservation_controller):
+        self.employee_controller = employee_controller
+        self.reservation_controller = reservation_controller
 
         self.root = tk.Tk()
         self.root.title("Desk GUI – DEMO")
@@ -18,7 +18,7 @@ class Application:
             on_approve=self.approve_reservation,
             on_deny=self.deny_reservation,
             on_new_employee=self.show_employee_form,
-            #get_reservations=self.reservation_controller.get_reservations_by_date
+            get_reservations=self.reservation_controller.get_reservations_by_date
         )
         self.main_view.show()
 
@@ -28,24 +28,26 @@ class Application:
             on_save=self.save_employee,
             on_back=self.show_main_view
         )
+        self.refresh_main_view()
 
     # ---------- callbacks ----------
     def approve_reservation(self, index):
-        #self.reservation_controller.approve(index)
+        self.reservation_controller.approve(index)
         self.refresh_main_view()
 
     def deny_reservation(self, index):
-        #self.reservation_controller.deny(index)
+        self.reservation_controller.deny(index)
         self.refresh_main_view()
 
     def save_employee(self, employee_data):
-       # self.employee_controller.add_employee(employee_data)
+        self.employee_controller.add_employee(employee_data)
         print("Nový zaměstnanec:", employee_data)
         self.show_main_view()
 
     # ---------- UI control ----------
     def refresh_main_view(self):
-        #self.main_view.set_reservations(self.reservation_controller.get_all())
+        self.main_view.set_reservations(self.reservation_controller.get_all())
+        print(self.reservation_controller.get_all())
         print("Refresh main view")
 
     def show_main_view(self):
