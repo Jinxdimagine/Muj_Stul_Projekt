@@ -1,26 +1,21 @@
-from WebSocketClient import WebSocketClient
-from UI.main_window import DeskGUI
-from dshandler import DsHandler
+from application.Application import Application
+
+#from controller.employee_controller import EmployeeController
+#from controller.reservation_controller import ReservationController
+#from dao.dao import DAO
+
 def main():
-    dshandler=DsHandler()
-    # Create WebSocket client
-    ws_client = WebSocketClient("ws://localhost:3031")
+    # DAO – přístup k databázi
+    #dao = DAO()
 
-    # Create GUI and pass WebSocket client
-    gui = DeskGUI(ws_client)
-    
-    def handle_ws_message(data):
-        if "name" in data and "people" in data:
-            gui.add_reservation(data)
-        else:
-            print("Ignored non-reservation message:", data)
-    # Pass GUI callback to WebSocket so new reservations are added
-    ws_client.on_message = handle_ws_message
-    # Start WebSocket in background
-    ws_client.start()
+    # Controller-y pro jednotlivé entity
+    #employee_controller = EmployeeController(dao)
+    #reservation_controller = ReservationController(dao)
 
-    # Start GUI loop (blocking)
-    gui.run()
+    # Hlavní aplikace – GUI + swap view
+    #app = Application(employee_controller, reservation_controller)
+    app = Application()
+    app.run()
 
 if __name__ == "__main__":
-   main()
+    main()
