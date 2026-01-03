@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import messagebox,ttk
 import re
 class EmployeeForm(tk.Frame):
     def __init__(self, parent, on_save, on_back):
@@ -25,6 +25,17 @@ class EmployeeForm(tk.Frame):
         tk.Label(self,text=" Datum Narozeni(DD.MM.RRRR) ").pack()
         self.birth_date=tk.Entry(self)
         self.birth_date.pack()
+        tk.Label(self, text="Pozice").pack()
+
+        self.position_var = tk.StringVar()
+        self.position_combo = ttk.Combobox(
+            self,
+            textvariable=self.position_var,
+            state="readonly",
+            values=["Číšník", "Barman", "Kuchař"]
+        )
+        self.position_combo.pack()
+        self.position_combo.current(0)
         tk.Button(self, text="Uložit", command=self.save).pack(pady=5)
         tk.Button(self, text="Zpět", command=self.on_back).pack()
 
