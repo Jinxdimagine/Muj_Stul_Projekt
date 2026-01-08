@@ -18,10 +18,6 @@ class EmployeeForm(tk.Frame):
         self.surname = tk.Entry(self)
         self.surname.pack()
 
-        tk.Label(self, text="Pozice").pack()
-        self.position = tk.Entry(self)
-        self.position.pack()
-
         tk.Label(self,text=" Datum Narozeni(DD.MM.RRRR) ").pack()
         self.birth_date=tk.Entry(self)
         self.birth_date.pack()

@@ -1,6 +1,6 @@
 import tkinter as tk
 from UI.main_view import MainView
-from UI.employee_form import EmployeeForm
+from UI.employee_new_form import EmployeeForm
 from UI.day_detail_view import DayDetailView
 from UI.employee_list_view import EmployeeListView
 from UI.employee_detail_view import EmployeeDetailView
