@@ -2,50 +2,35 @@ import tkinter as tk
 
 
 class DayDetailView(tk.Frame):
-    def __init__(self, parent, date, day_data, on_back):
+    def __init__(self, parent, date, day_data, on_back, on_add_shift):
         super().__init__(parent)
 
         self.date = date
         self.day_data = day_data
         self.on_back = on_back
+        self.on_add_shift = on_add_shift
 
         self.build_ui()
 
     def build_ui(self):
-        tk.Label(
-            self,
-            text=f"Detail dne {self.date}",
-            font=("Arial", 16)
-        ).pack(pady=10)
+        tk.Label(self, text=f"Detail dne: {self.date}", font=("Arial", 18)).pack(pady=10)
 
-        content = tk.Frame(self)
-        content.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+        # -------- REZERVACE --------
+        tk.Label(self, text="Rezervace", font=("Arial", 14)).pack(pady=5)
 
-        # ---------- Rezervace ----------
-        res_frame = tk.LabelFrame(content, text="Rezervace")
-        res_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=5)
+        for r in self.day_data["reservations"]:
+            tk.Label(self, text=f"{r['time']} – {r['name']}").pack(anchor="w")
 
-        res_list = tk.Listbox(res_frame)
-        res_list.pack(fill=tk.BOTH, expand=True)
+        # -------- SMĚNY --------
+        tk.Label(self, text="Směny", font=("Arial", 14)).pack(pady=10)
 
-        for r in self.day_data.get("reservations", []):
-            res_list.insert(tk.END, f"{r['name']} – {r['time']}")
+        for s in self.day_data["shifts"]:
+            text = f"{s['from']} - {s['to']} | {', '.join(s['employees'])}"
+            tk.Label(self, text=text).pack(anchor="w")
 
-        # ---------- Směny ----------
-        shift_frame = tk.LabelFrame(content, text="Směny")
-        shift_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=5)
+        # -------- AKCE --------
+        tk.Button(self, text="+ Přidat směnu", command=self.add_shift).pack(pady=10)
+        tk.Button(self, text="Zpět", command=self.on_back).pack(pady=5)
 
-        shift_list = tk.Listbox(shift_frame)
-        shift_list.pack(fill=tk.BOTH, expand=True)
-
-        for s in self.day_data.get("shifts", []):
-            shift_list.insert(
-                tk.END, f"{s['employee']} {s['from']}–{s['to']}"
-            )
-
-        # ---------- Ovládání ----------
-        bottom = tk.Frame(self)
-        bottom.pack(fill=tk.X, pady=10)
-
-        tk.Button(bottom, text="⬅ Zpět na kalendář", command=self.on_back) \
-            .pack(side=tk.LEFT, padx=10)
+    def add_shift(self):
+        self.on_add_shift(self.date)

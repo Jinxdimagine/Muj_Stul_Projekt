@@ -1,19 +1,36 @@
 from application.Application import Application
+
 from Controller.EmployeeController import EmployeeController
 from Controller.ReservationController import ReservationController
-#from dao.dao import DAO
+from Controller.ShiftController import ShiftController
+
+from DAO.EmployeeDAO import EmployeeDAO
+from DAO.ShiftDAO import ShiftDAO
+from DAO.EmployeeShiftDAO import EmployeeShiftDAO
+
 
 def main():
-    # DAO – přístup k databázi
-    #dao = DAO()
+    # ---------- DAO ----------
+    employee_dao = EmployeeDAO()
+    shift_dao = ShiftDAO()
+    employee_shift_dao = EmployeeShiftDAO()
 
-    # Controller-y pro jednotlivé entity
-    employee_controller = EmployeeController()
+    # ---------- CONTROLLERY ----------
+    employee_controller = EmployeeController(employee_dao)
     reservation_controller = ReservationController()
+    shift_controller = ShiftController(
+        shift_dao=shift_dao,
+        employee_shift_dao=employee_shift_dao
+    )
 
-    # Hlavní aplikace – GUI + swap view
-    app = Application(employee_controller, reservation_controller)
+    # ---------- APLIKACE ----------
+    app = Application(
+        employee_controller=employee_controller,
+        reservation_controller=reservation_controller,
+        shift_controller=shift_controller
+    )
     app.run()
+
 
 if __name__ == "__main__":
     main()
