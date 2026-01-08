@@ -8,11 +8,11 @@ from UI.ShiftFormView import ShiftFormView
 
 class Application:
 
-    def __init__(self,employee_controller,reservation_controller,shift_controller):
+    def __init__(self,employee_controller,reservation_controller,shift_controller,position_controller):
         self.employee_controller = employee_controller
         self.reservation_controller = reservation_controller
         self.shift_controller = shift_controller
-
+        self.position_controller = position_controller
         self.root = tk.Tk()
         self.root.title("Desk GUI – DEMO")
         self.root.geometry("1000x600")
@@ -68,7 +68,8 @@ class Application:
         self.current_view = EmployeeForm(
             parent=self.root,
             on_save=self.save_employee,
-            on_back=self.show_main_view
+            on_back=self.show_main_view,
+            position_all=self.position_controller.get_all()
         )
         self.current_view.pack(fill=tk.BOTH, expand=True)
 
@@ -88,7 +89,7 @@ class Application:
 
             self.current_view = EmployeeListView(
                 parent=self.root,
-                employees=self.employees,           # tvá dummy list / DAO data
+                employees=self.employee_controller.get_all,           # tvá dummy list / DAO data
                 on_open_employee=self.show_employee_detail,
                 on_back=self.show_main_view
             )
@@ -165,8 +166,9 @@ class Application:
         self.refresh_main_view()
 
     def save_employee(self, employee_data):
-        self.employee_controller.add_employee(employee_data)
+        employee_data["position"]=self.position_controller.get_id_by_name(employee_data["position"])
         print("Nový zaměstnanec:", employee_data)
+        self.employee_controller.add(employee_data)
         self.show_main_view()
 
     # -------------------------------------------------

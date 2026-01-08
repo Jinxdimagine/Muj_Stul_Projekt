@@ -5,12 +5,19 @@ class PositionDAO:
     def __init__(self, connection_params):
         self.conn = mysql.connector.connect(**connection_params)
         self.cursor = self.conn.cursor(dictionary=True)
-
     def get_all(self):
         self.cursor.execute("SELECT * FROM positions")
         rows = self.cursor.fetchall()
-        return [Position(**r) for r in rows]
+        list=[]
+        for r in rows:
+            list.append(Position(**r))
+        return list
 
+    def get_id_by_name(self, name):
+        self.cursor.execute("SELECT id FROM positions WHERE name=%s", (name,))
+        row = self.cursor.fetchone()
+
+        return row["id"]
     def get_by_id(self, id):
         self.cursor.execute("SELECT * FROM positions WHERE id=%s", (id,))
         row = self.cursor.fetchone()

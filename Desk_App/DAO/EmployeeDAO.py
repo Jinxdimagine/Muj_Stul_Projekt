@@ -16,6 +16,8 @@ class EmployeeDAO:
         return Employee(**row) if row else None
 
     def add(self, e: Employee):
+        print(e)
+        print(e.first_name)
         sql = """INSERT INTO employees (first_name,last_name,position_id,is_full_time,hour_rate)
                  VALUES (%s,%s,%s,%s,%s)"""
         self.cursor.execute(sql, (e.first_name, e.last_name, e.position_id, e.is_full_time, e.hour_rate))

@@ -10,6 +10,7 @@ class Database:
             database="mujstul"
         )
         self.cursor = self.conn.cursor(dictionary=True)
+        print("Pripojena Databaze")
 
     def commit(self):
         self.conn.commit()
