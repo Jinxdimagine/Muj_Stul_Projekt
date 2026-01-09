@@ -20,24 +20,6 @@ class Application:
 
         self.current_view = None
         self.show_main_view()
-        self.employees = [
-            {
-                "id": 1,
-                "first_name": "Petr",
-                "last_name": "Novák",
-                "position": "Číšník",
-                "hour_rate": 180,
-                "active": True
-            },
-            {
-                "id": 2,
-                "first_name": "Eva",
-                "last_name": "Svobodová",
-                "position": "Kuchař",
-                "hour_rate": 220,
-                "active": True
-            }
-        ]
     # -------------------------------------------------
     # VIEW MANAGEMENT
     # -------------------------------------------------
@@ -86,10 +68,9 @@ class Application:
 
     def show_employee_list(self):
             self.clear_view()
-
             self.current_view = EmployeeListView(
                 parent=self.root,
-                employees=self.employee_controller.get_all,           # tvá dummy list / DAO data
+                employees=self.employee_controller.get_all(),
                 on_open_employee=self.show_employee_detail,
                 on_back=self.show_main_view
             )
@@ -100,12 +81,9 @@ class Application:
 
     def show_employee_detail(self, employee_id):
         self.clear_view()
-
-        employee = next(e for e in self.employees if e["id"] == employee_id)
-
         self.current_view = EmployeeDetailView(
             parent=self.root,
-            employee=employee,
+            employee=self.employee_controller.get_by_id(employee_id),
             on_back=self.show_employee_list,
             on_delete=self.delete_employee,
             on_save=self.save_employee_changes
@@ -131,12 +109,10 @@ class Application:
     def show_shift_form(self, date, shift=None):
         self.clear_view()
 
-        employees = self.employee_controller.get_all()
-
         self.current_view = ShiftFormView(
             parent=self.root,
             date=date,
-            employees=employees,
+            employees=self.employee_controller.get_all(),
             shift=shift,
             on_save=self.save_shift,
             on_cancel=self.show_main_view
@@ -144,7 +120,7 @@ class Application:
         self.current_view.pack(fill=tk.BOTH, expand=True)
 
     def save_shift(self, shift_data):
-        self.shift_controller.save_shift(shift_data)
+        self.shift_controller.add_shift(shift_data)
         self.show_main_view()
 
 

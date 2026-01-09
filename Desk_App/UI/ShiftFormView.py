@@ -21,8 +21,9 @@ class ShiftFormView(tk.Frame):
         self.date = date
         self.on_save = on_save
         self.on_cancel = on_cancel
-        self.employees = employees
+        self.employees = list(employees)
         self.shift = shift
+
 
         self.employee_vars = {}
 
@@ -55,21 +56,20 @@ class ShiftFormView(tk.Frame):
 
         emp_frame = tk.Frame(self)
         emp_frame.pack()
-
-        for emp in self.employees:
+        for employee in self.employees:
             var = tk.BooleanVar()
 
-            if self.shift and emp["id"] in self.shift["employee_ids"]:
+            if self.shift and employee.employee_id in self.shift["employee_ids"]:
                 var.set(True)
 
             cb = tk.Checkbutton(
                 emp_frame,
-                text=f"{emp['first_name']} {emp['last_name']}",
+                text=f"{employee.first_name} {employee.last_name}",
                 variable=var
             )
             cb.pack(anchor="w")
 
-            self.employee_vars[emp["id"]] = var
+            self.employee_vars[employee.employee_id] = var
 
         # --- Tlačítka ---
         btns = tk.Frame(self)
@@ -90,5 +90,4 @@ class ShiftFormView(tk.Frame):
             "employees": selected_employees,
             "shift_id": self.shift["id"] if self.shift else None
         }
-
         self.on_save(data)

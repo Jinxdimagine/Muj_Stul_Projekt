@@ -1,3 +1,4 @@
+from Entity.Shift import Shift
 class ShiftController:
     def __init__(self, shift_dao, employee_shift_dao):
         self.shift_dao = shift_dao
@@ -7,6 +8,7 @@ class ShiftController:
         return self.shift_dao.get_all()
 
     def add_shift(self, shift):
+        shift_insert=Shift(shift)
         return self.shift_dao.add(shift)
 
     def update_shift(self, shift):

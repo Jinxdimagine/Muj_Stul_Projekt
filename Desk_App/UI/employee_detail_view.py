@@ -11,12 +11,11 @@ class EmployeeDetailView(tk.Frame):
         self.on_save = on_save
 
         tk.Label(self, text="Profil zaměstnance", font=("Arial", 18)).pack(pady=10)
-
-        self.first_name = tk.StringVar(value=employee["first_name"])
-        self.last_name = tk.StringVar(value=employee["last_name"])
-        self.position = tk.StringVar(value=employee["position"])
-        self.hour_rate = tk.StringVar(value=str(employee["hour_rate"]))
-        self.active = tk.BooleanVar(value=employee["active"])
+        self.first_name = tk.StringVar(value=employee.first_name)
+        self.last_name = tk.StringVar(value=employee.last_name)
+        self.position = tk.StringVar(value=employee.position_id)
+        self.hour_rate = tk.StringVar(value=str(employee.hour_rate))
+        self.active = tk.BooleanVar(value=employee.is_full_time)
 
         self._row("Jméno", self.first_name)
         self._row("Příjmení", self.last_name)

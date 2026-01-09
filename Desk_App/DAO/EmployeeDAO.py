@@ -8,19 +8,35 @@ class EmployeeDAO:
 
     def get_all(self):
         self.cursor.execute("SELECT * FROM employees")
-        return [Employee(**r) for r in self.cursor.fetchall()]
+        rows=self.cursor.fetchall()
+        return rows
+
 
     def get_by_id(self, id):
-        self.cursor.execute("SELECT * FROM employees WHERE id=%s", (id,))
+        sql = """
+            SELECT 
+                e.id,
+                e.first_name,
+                e.last_name,
+                e.position_id,
+                p.name AS position_name,
+                e.is_full_time,
+                e.hour_rate
+            FROM employees e
+            JOIN positions p ON e.position_id = p.id
+            WHERE e.id = %s
+        """
+        self.cursor.execute(sql, (id,))
         row = self.cursor.fetchone()
-        return Employee(**row) if row else None
+        return row
+
 
     def add(self, e: Employee):
         print(e)
         print(e.first_name)
-        sql = """INSERT INTO employees (first_name,last_name,position_id,is_full_time,hour_rate)
-                 VALUES (%s,%s,%s,%s,%s)"""
-        self.cursor.execute(sql, (e.first_name, e.last_name, e.position_id, e.is_full_time, e.hour_rate))
+        sql = """INSERT INTO employees (first_name,last_name,position_id,is_full_time,hour_rate,birth_date)
+                 VALUES (%s,%s,%s,%s,%s,%s)"""
+        self.cursor.execute(sql, (e.first_name, e.last_name, e.position_id, e.is_full_time, e.hour_rate,e.birth_date))
         self.conn.commit()
         e.id = self.cursor.lastrowid
         return e

@@ -31,7 +31,7 @@ def main():
     reservation_controller = ReservationController(reservation_dao)
     shift_controller = ShiftController(shift_dao, employee_shift_dao)
     position_controller=PositionController(position_dao)
-
+    print(employee_dao.get_by_id(1))
     # APLIKACE
     app = Application(
         employee_controller=employee_controller,

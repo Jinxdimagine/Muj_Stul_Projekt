@@ -17,7 +17,6 @@ class EmployeeForm(tk.Frame):
         tk.Label(self, text="Příjmení").pack()
         self.surname = tk.Entry(self)
         self.surname.pack()
-
         tk.Label(self,text=" Datum Narozeni(DD.MM.RRRR) ").pack()
         self.birth_date=tk.Entry(self)
         self.birth_date.pack()
