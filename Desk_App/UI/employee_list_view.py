@@ -2,12 +2,12 @@ import tkinter as tk
 
 
 class EmployeeListView(tk.Frame):
-    def __init__(self, parent, employees, on_open_employee, on_back):
+    def __init__(self, parent, employees,employee_show, on_open_employee, on_back,):
         super().__init__(parent)
         self.on_open_employee = on_open_employee
         self.on_back = on_back
         self.employees = list(employees)
-
+        self.employee_show = list(employee_show)
         tk.Label(self, text="Seznam zaměstnanců", font=("Arial", 18)).pack(pady=10)
 
         self.listbox = tk.Listbox(self, width=40, height=15)
@@ -15,7 +15,7 @@ class EmployeeListView(tk.Frame):
 
         for employee in self.employees:
             self.listbox.insert(
-                tk.END, f"{employee.employee_id} – {employee.first_name} {employee.last_name}")
+                tk.END, f"{employee.employee_id} – {employee.first_name} -{employee.last_name}-{employee.position_name}")
 
         tk.Button(self, text="Otevřít profil", command=self.open_selected).pack(pady=5)
         tk.Button(self, text="Zpět", command=self.on_back).pack(pady=5)

@@ -15,10 +15,10 @@ class EmployeeController:
                 position_id=r["position_id"],
                 is_full_time=r["is_full_time"],
                 hour_rate=r["hour_rate"],
+                position_name=r["position_name"],
             )
             employees.append(employee)
         return employees
-
     def get_by_id(self, id):
         r=self.dao.get_by_id(id)
         employee = Employee(
@@ -50,3 +50,5 @@ class EmployeeController:
     def delete(self, id):
         print(id)
         self.dao.delete(id)
+    def get_all_view(self):
+        return self.dao.get_view_allf()

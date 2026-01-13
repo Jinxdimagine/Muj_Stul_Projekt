@@ -90,6 +90,7 @@ class Application:
             self.current_view = EmployeeListView(
                 parent=self.root,
                 employees=self.employee_controller.get_all(),
+                employee_show=self.employee_controller.get_all_view(),
                 on_open_employee=self.show_employee_detail,
                 on_back=self.show_main_view
             )

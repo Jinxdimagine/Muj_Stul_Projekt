@@ -102,3 +102,10 @@ class EmployeeDAO:
     def deactivate(self, employee_id):
         self.cursor.execute("UPDATE employee SET active=0 WHERE id=%s", (employee_id,))
         self.conn.commit()
+    def get_view_all(self):
+        """
+        Returns a list of all employees with their position info.
+        """
+        sql = "SELECT * FROM vw_employee_overview"
+        self.cursor.execute(sql)
+        return self.cursor.fetchall()
