@@ -6,21 +6,15 @@ class MainView(tk.Frame):
     def __init__(
             self,
             parent,
-            on_approve,
-            on_deny,
             on_new_employee,
             on_open_day,
-            get_reservations,
             on_employee_list,
     ):
         super().__init__(parent)
 
-        self.on_approve = on_approve
-        self.on_deny = on_deny
         self.on_new_employee = on_new_employee
         self.on_employee_list = on_employee_list
         self.on_open_day = on_open_day
-        self.get_reservations = get_reservations
 
         self.current_month = datetime.now().replace(day=1)
 
@@ -104,51 +98,50 @@ class MainView(tk.Frame):
         self.draw_calendar()
 
     def draw_calendar(self):
+        # Clear previous calendar
         for w in self.days_frame.winfo_children():
             w.destroy()
 
+        # Weekday headers
         days = ["Po", "Út", "St", "Čt", "Pá", "So", "Ne"]
         for i, d in enumerate(days):
             tk.Label(self.days_frame, text=d).grid(row=0, column=i, sticky="nsew")
 
+        # First weekday of month (0=Monday)
         start = self.current_month.weekday()
+
+        # Days in month
         next_month = (self.current_month.replace(day=28) + timedelta(days=4)).replace(day=1)
         days_in_month = (next_month - timedelta(days=1)).day
 
-        grouped = self.get_reservations()
-
         row, col = 1, start
         for day in range(1, days_in_month + 1):
-            date_str = self.current_month.replace(day=day).strftime("%Y-%m-%d")
+            # Get full date string
+            date_obj = self.current_month.replace(day=day)
+            date_str = date_obj.strftime("%Y-%m-%d")
 
+            # Create cell
             cell = tk.Frame(self.days_frame, bd=1, relief="solid")
             cell.grid(row=row, column=col, sticky="nsew", padx=1, pady=1)
 
-            cell.bind(
-                "<Button-1>",
-                lambda e, d=date_str: self.on_open_day(d, self.get_day_data(d))
-            )
+            # Bind click — capture current date with default argument
+            cell.bind("<Button-1>", lambda e, ds=date_str: self.on_open_day(ds))
 
+            # Show day number
             tk.Label(cell, text=str(day), anchor="nw").pack(anchor="nw")
 
-            for r in grouped.get(date_str, []):
-                tk.Label(cell, text=r["name"], font=("Arial", 8)).pack(anchor="w")
-
+            # Move to next column/day
             col += 1
             if col > 6:
                 col = 0
                 row += 1
 
+        # Make columns and rows expandable
         for i in range(7):
             self.days_frame.columnconfigure(i, weight=1)
         for i in range(row + 1):
             self.days_frame.rowconfigure(i, weight=1)
 
-    def get_day_data(self, date_str):
-        return {
-            "reservations": [],
-            "shifts": [],
-        }
 
     def prev_month(self):
         self.current_month = (self.current_month - timedelta(days=1)).replace(day=1)

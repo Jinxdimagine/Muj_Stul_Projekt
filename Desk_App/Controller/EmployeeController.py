@@ -28,6 +28,7 @@ class EmployeeController:
             position_id=r["position_id"],
             is_full_time=r["is_full_time"],
             hour_rate=r["hour_rate"],
+            birth_date=r["birth_date"],
         )
         return employee
 
@@ -37,7 +38,7 @@ class EmployeeController:
             employee_id=None,
             first_name=employee_data["first_name"],
             last_name=employee_data["last_name"],
-            position_id=employee_data["position"],
+            position_id=employee_data["position_id"],
             birth_date=employee_data["birth_date"],   # správně formát date
             hour_rate=float(employee_data["hour_rate"])
         )
@@ -47,4 +48,5 @@ class EmployeeController:
         self.dao.update(employee)
 
     def delete(self, id):
+        print(id)
         self.dao.delete(id)

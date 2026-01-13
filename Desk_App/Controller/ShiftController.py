@@ -6,14 +6,12 @@ class ShiftController:
 
     def get_all_shifts(self):
         return self.shift_dao.get_all()
-
-    def add_shift(self, shift):
-        shift_insert=Shift(shift)
-        return self.shift_dao.add(shift)
-
-    def update_shift(self, shift):
-        self.shift_dao.update(shift)
-
+    def get_shifts_by_date(self,date):
+        return self.shift_dao.get_shifts_by_date(date)
+    def add_shift(self, shift,selected_employee):
+        return self.shift_dao.add(shift,selected_employee)
+    def update_shift(self, shift,selected_employee):
+        self.shift_dao.update(shift,selected_employee)
     def delete_shift(self, shift_id):
         self.shift_dao.delete(shift_id)
 
