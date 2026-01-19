@@ -1,6 +1,6 @@
 from Entity.Employee import Employee
 import mysql.connector
-
+import csv
 class EmployeeDAO:
     def __init__(self, connection_params):
         self.conn = mysql.connector.connect(**connection_params)
@@ -109,3 +109,26 @@ class EmployeeDAO:
         sql = "SELECT * FROM vw_employee_overview"
         self.cursor.execute(sql)
         return self.cursor.fetchall()
+    def get_all_stats(self):
+        sql = "SELECT * FROM vw_employee_stats"
+        self.cursor.execute(sql)
+        return self.cursor.fetchall()
+
+    def import_from_csv(self, file_path):
+        with open(file_path, newline='', encoding='utf-8') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                sql = """
+                    INSERT INTO employee (first_name, last_name, position_id, birth_date, hour_rate, is_full_time, active)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s)
+                """
+                self.cursor.execute(sql, (
+                    row['first_name'],
+                    row['last_name'],
+                    row['position_id'],
+                    row['birth_date'],
+                    row['hour_rate'],
+                    row['is_full_time'],
+                    row['active']
+                ))
+            self.conn.commit()

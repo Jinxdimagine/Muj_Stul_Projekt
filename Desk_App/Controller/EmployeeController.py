@@ -51,4 +51,8 @@ class EmployeeController:
         print(id)
         self.dao.delete(id)
     def get_all_view(self):
-        return self.dao.get_view_allf()
+        return self.dao.get_view_all()
+    def get_all_stats(self):
+        return self.dao.get_all_stats()
+    def import_employees(self, file_path):
+        self.dao.import_from_csv(file_path)

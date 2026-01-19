@@ -1,6 +1,6 @@
 from Entity.Shift import Shift
 import mysql.connector
-
+import csv
 class ShiftDAO:
     def __init__(self, connection_params):
         self.conn = mysql.connector.connect(**connection_params)
@@ -84,3 +84,19 @@ class ShiftDAO:
             (shift_id,)  # comma makes it a tuple
         )
         self.conn.commit()
+    def import_from_csv(self, file_path):
+        with open(file_path, newline='', encoding='utf-8') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                # 1️⃣ vložíme samotnou směnu
+                sql_shift = """
+                    INSERT INTO shifts (shift_date, start_time, end_time, type_shift_id)
+                    VALUES (%s, %s, %s, %s)
+                """
+                self.cursor.execute(sql_shift, (
+                    row['shift_date'],
+                    row['start_time'],
+                    row['end_time'],
+                    row['type_shift_id']
+                ))
+            self.conn.commit()

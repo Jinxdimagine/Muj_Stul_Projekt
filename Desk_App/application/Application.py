@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import filedialog, messagebox
 from Entity.Shift import Shift  # make sure this import is at the top
 from UI.main_view import MainView
 from UI.employee_new_form import EmployeeForm
@@ -6,7 +7,7 @@ from UI.day_detail_view import DayDetailView
 from UI.employee_list_view import EmployeeListView
 from UI.employee_detail_view import EmployeeDetailView
 from UI.ShiftFormView import ShiftFormView
-
+from UI.employee_view_stats import EmployeeStatsView
 class Application:
 
     def __init__(self,employee_controller,shift_controller,position_controller,shift_type_controller):
@@ -37,6 +38,9 @@ class Application:
             on_new_employee=self.show_employee_form,
             on_open_day=self.show_day_detail,
             on_employee_list=self.show_employee_list,
+            on_employee_stats=self.show_employee_stats,
+            on_employye_import=self.import_employees,
+            on_shift_import=self.import_shifts,
         )
         self.current_view.pack(fill=tk.BOTH, expand=True)
 
@@ -102,12 +106,7 @@ class Application:
     # Fetch shifts for the day
         day_data = self.shift_controller.get_shifts_by_date(date)
 
-        # If there are no shifts, do nothing (or optionally show a message)
-        if not day_data:
-            print(f"No shifts for {date}")  # simple console log
-            # Optionally, you could show a messagebox:
-            # messagebox.showinfo("Info", f"No shifts scheduled for {date}")
-            return
+
 
         # If there are shifts, show them
         self.current_view = DayDetailView(
@@ -120,7 +119,14 @@ class Application:
         self.current_view.pack(fill=tk.BOTH, expand=True)
 
 
-
+    def show_employee_stats(self):
+        self.clear_view()
+        self.current_view = EmployeeStatsView(
+            parent=self.root,
+            stats=self.employee_controller.get_all_stats(),
+            on_back=self.show_main_view,
+        )
+        self.current_view.pack(fill=tk.BOTH, expand=True)
     def show_employee_detail(self, employee_id):
         self.clear_view()
         self.current_view = EmployeeDetailView(
@@ -151,6 +157,31 @@ class Application:
             self.shift_controller.add_shift(shift_data,selected_employess)
         self.show_main_view()
 
+    def import_employees(self):
+        file_path = filedialog.askopenfilename(
+            title="Vyberte CSV soubor",
+            filetypes=(("CSV files", "*.csv"),)
+        )
+        if file_path:
+            try:
+                self.employee_controller.import_employees(file_path)
+                messagebox.showinfo("Hotovo", "Data byla úspěšně importována!")
+                self.show_main_view()  # refresh
+            except Exception as e:
+                messagebox.showerror("Chyba", str(e))
+
+    def import_shifts(self):
+        file_path = filedialog.askopenfilename(
+            title="Vyberte CSV soubor pro směny",
+            filetypes=(("CSV files", "*.csv"),)
+        )
+        if file_path:
+            try:
+                self.shift_controller.import_shifts(file_path)
+                messagebox.showinfo("Hotovo", "Směny byly úspěšně importovány!")
+                self.show_main_view()  # refresh view
+            except Exception as e:
+                messagebox.showerror("Chyba", str(e))
 
     # -------------------------------------------------
     # CALLBACKS

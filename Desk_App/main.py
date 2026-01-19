@@ -25,9 +25,6 @@ def main():
     shift_controller = ShiftController(shift_dao, employee_shift_dao)
     position_controller = PositionController(position_dao)
     shift_type_controller = Shift_typeController(shift_type_dao)
-
-    print(employee_dao.get_view_all())
-
     # Application
     app = Application(
         employee_controller=employee_controller,

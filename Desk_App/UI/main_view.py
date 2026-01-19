@@ -9,15 +9,19 @@ class MainView(tk.Frame):
             on_new_employee,
             on_open_day,
             on_employee_list,
+            on_employee_stats,
+            on_employye_import,
+            on_shift_import
     ):
         super().__init__(parent)
 
         self.on_new_employee = on_new_employee
         self.on_employee_list = on_employee_list
         self.on_open_day = on_open_day
-
+        self.on_employee_stats = on_employee_stats
         self.current_month = datetime.now().replace(day=1)
-
+        self.on_employee_import=on_employye_import
+        self.on_shift_import=on_shift_import
         self.build_ui()
         self.pack(fill=tk.BOTH, expand=True)
 
@@ -59,6 +63,21 @@ class MainView(tk.Frame):
             command=self.on_employee_list
         ).pack(padx=10, pady=5, fill=tk.X)
 
+        tk.Button(
+            self.left,
+            text="Statistika zamestnancu",
+            command=self.on_employee_stats
+        ).pack(padx=10, pady=5, fill=tk.X)
+        tk.Button(
+            self.left,
+            text="Import zamestnancu",
+            command=self.on_employee_import
+        ).pack(padx=10, pady=5, fill=tk.X)
+        tk.Button(
+            self.left,
+            text="Import smen",
+            command=self.on_shift_import
+        ).pack(padx=10, pady=5, fill=tk.X)
         # ================= RIGHT PANEL =================
         self.right = tk.Frame(self, bg="white")
         self.right.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=10, pady=10)

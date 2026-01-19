@@ -20,3 +20,5 @@ class ShiftController:
 
     def remove_employee(self, shift_id, employee_id):
         self.employee_shift_dao.remove(employee_id, shift_id)
+    def import_shifts(self, file_path):
+        self.shift_dao.import_from_csv(file_path)
